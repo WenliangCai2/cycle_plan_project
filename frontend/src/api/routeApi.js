@@ -1,12 +1,12 @@
 /**
- * 路线相关API服务
+ * Route related API services
  */
 import axios from 'axios';
 
-// API基础URL
+// API base URL
 const API_BASE_URL = 'http://localhost:5000/api';
 
-// 创建axios实例
+// Create axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -14,7 +14,7 @@ const api = axios.create({
   },
 });
 
-// 请求拦截器 - 添加认证token
+// Request interceptor - Add authentication token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -29,45 +29,45 @@ api.interceptors.request.use(
 );
 
 /**
- * 获取用户的所有路线
- * @returns {Promise} - 包含路线列表的Promise
+ * Get all routes for a user
+ * @returns {Promise} - Promise containing list of routes
  */
 export const getRoutes = async () => {
   try {
     const response = await api.get('/routes');
     return response.data;
   } catch (error) {
-    throw error.response?.data || { success: false, message: '获取路线失败' };
+    throw error.response?.data || { success: false, message: 'Failed to get routes' };
   }
 };
 
 /**
- * 创建新的路线
- * @param {Object} route - 路线信息
- * @param {string} route.name - 路线名称
- * @param {Array} route.locations - 路线包含的位置点
- * @returns {Promise} - 包含创建结果的Promise
+ * Create a new route
+ * @param {Object} route - Route information
+ * @param {string} route.name - Route name
+ * @param {Array} route.locations - Locations included in the route
+ * @returns {Promise} - Promise containing creation result
  */
 export const createRoute = async (route) => {
   try {
     const response = await api.post('/routes', { route });
     return response.data;
   } catch (error) {
-    throw error.response?.data || { success: false, message: '创建路线失败' };
+    throw error.response?.data || { success: false, message: 'Failed to create route' };
   }
 };
 
 /**
- * 删除路线
- * @param {string} routeId - 路线ID
- * @returns {Promise} - 包含删除结果的Promise
+ * Delete a route
+ * @param {string} routeId - Route ID
+ * @returns {Promise} - Promise containing deletion result
  */
 export const deleteRoute = async (routeId) => {
   try {
     const response = await api.delete(`/routes/${routeId}`);
     return response.data;
   } catch (error) {
-    throw error.response?.data || { success: false, message: '删除路线失败' };
+    throw error.response?.data || { success: false, message: 'Failed to delete route' };
   }
 };
 
