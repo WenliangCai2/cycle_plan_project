@@ -1,5 +1,5 @@
 """
-自定义标记点数据模型
+Custom point data model
 """
 import uuid
 from datetime import datetime
@@ -29,7 +29,7 @@ class CustomPoint:
     
     @staticmethod
     def from_dict(point_dict):
-
+        """Creates a custom point object from a dictionary"""
         point = CustomPoint(
             name=point_dict['name'],
             location=point_dict['location'],
@@ -42,23 +42,23 @@ class CustomPoint:
     
     @staticmethod
     def create_point(name, location, user_id):
-        """creates a new custom point"""
+        """Creates a new custom point"""
         global db
         if db is None:
-            print("警告: 数据库连接未设置，自定义点创建失败")
+            print("Warning: Database connection not set, custom point creation failed")
             return None
             
         point = CustomPoint(name=name, location=location, user_id=user_id)
         result = db.custom_points.insert_one(point.to_dict())
-        print(f"自定义点创建成功，ID: {point.point_id}")
+        print(f"Custom point created successfully, ID: {point.point_id}")
         return point
     
     @staticmethod
     def get_points_by_user_id(user_id):
-        """get all points by user id"""
+        """Get all points by user ID"""
         global db
         if db is None:
-            print("警告: 数据库连接未设置，无法获取自定义点")
+            print("Warning: Database connection not set, unable to get custom points")
             return []
             
         point_dicts = db.custom_points.find({'user_id': user_id})
@@ -66,9 +66,10 @@ class CustomPoint:
     
     @staticmethod
     def get_point_by_id(point_id):
+        """Get a point by its ID"""
         global db
         if db is None:
-            print("disconnect to database")
+            print("Warning: Database connection not set")
             return None
             
         point_dict = db.custom_points.find_one({'point_id': point_id})
@@ -78,10 +79,10 @@ class CustomPoint:
     
     @staticmethod
     def delete_point(point_id, user_id):
-        """deletes a point by id"""
+        """Delete a point by ID"""
         global db
         if db is None:
-            print("fail to delete because disconnect to database")
+            print("Warning: Database connection not set, deletion failed")
             return False
             
         result = db.custom_points.delete_one({'point_id': point_id, 'user_id': user_id})
